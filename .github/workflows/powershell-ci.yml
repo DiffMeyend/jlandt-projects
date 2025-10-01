@@ -1,0 +1,31 @@
+name: PowerShell CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell
+        uses: actions/setup-powershell@v2
+        with:
+          pwsh-version: '7.4.x'
+
+      - name: Install dependencies
+        run: |
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+          Install-Module Pester -Force -Scope CurrentUser
+
+      - name: Run Script Analyzer
+        run: Invoke-ScriptAnalyzer -Path ./src -Recurse -Settings ./PSScriptAnalyzerSettings.psd1 -Severity Error
+
+      - name: Run Pester Tests
+        run: Invoke-Pester -Path ./tests -Output Detailed -EnableExit
