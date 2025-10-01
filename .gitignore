@@ -1,0 +1,20 @@
+# installers / archives / blobs
+*.msi
+*.exe
+*.zip
+*.tar.gz
+*.7z
+
+# build + temp
+bin/
+obj/
+out/
+Logs/
+
+# editor cruft
+.vscode/
+.idea/
+
+# PowerShell extras
+*.ps1xml
+*.pssc
