@@ -1,5 +1,5 @@
 @{
-    RootModule        = 'SPO.HRSite.psm1'
+    RootModule        = 'SPO.SecureSite.psm1'
     ModuleVersion     = '0.1.0'
     GUID              = 'd98e3e76-9fd7-42b2-a111-000000000000'
     Author            = 'Jared Landt'
