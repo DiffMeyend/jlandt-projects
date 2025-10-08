@@ -1,0 +1,57 @@
+patterns.yaml  
+*(seed a few; add your own)*
+
+```yaml
+patterns:
+  - name: "Post-password-change sign-in failures"
+    hints: ["changed password", "MFA loop", "stuck signing in"]
+    steps:
+      - "Sign out everywhere; clear cached creds"
+      - "Force token refresh (browser InPrivate or client reset)"
+      - "Confirm MFA methods + license/role scope"
+    ps_fast:
+      scope:
+        modules: ["Microsoft.Graph.Authentication"]
+        auth: "Connect-MgGraph -Scopes 'User.ReadWrite.All','Directory.Read.All'"
+        perms: "Helpdesk or higher; ability to read/reset auth methods per policy"
+      steps:
+        - "# Inspect sign-in logs or risky users (read-only)"
+        - "Get-MgAuditLogSignIn -Filter \"UserId eq '{UPN}'\" -Top 5"
+        - "# Refresh/clear stale sessions (guided, if org allows Graph for this)"
+      automation_hook: "Wrap sign-in signal triage into a function that pulls last errors + suggests next steps"
+
+  - name: "Teams/Outlook profile corruption"
+    hints: ["search broken", "won't start", "calendar desync"]
+    steps:
+      - "Reset Teams cache / new Outlook profile"
+      - "Confirm WAM/WebAuth state"
+      - "Service health check"
+    ps_fast:
+      scope:
+        modules: ["ExchangeOnlineManagement"]
+        auth: "Connect-ExchangeOnline -UserPrincipalName {adminUPN}"
+        perms: "Mailbox support role"
+      steps:
+        - "Get-EXOMailbox -Identity {UPN} | Select-Object RecipientTypeDetails, ExternalDirectoryObjectId"
+        - "Get-EXOMailboxStatistics -Identity {UPN} | Select-Object ItemCount,TotalItemSize,LastLogonTime"
+        - "# Optional: Set-CASMailbox {UPN} -MAPIEnabled:$true (if policy drift)"
+      automation_hook: "Mailbox quick health probe → one-liner to gate whether local profile reset is warranted"
+
+  - name: "VPN/SSID pathing"
+    hints: ["works on guest wifi", "split tunnel", "DNS suffix"]
+    steps:
+      - "Test alt SSID/guest/VPN off"
+      - "Check split-tunnel and DNS resolution"
+      - "Captive portal check"
+    ps_fast:
+      scope:
+        modules: []
+        auth: "Local admin shell"
+        perms: "Device local admin"
+      steps:
+        - "Resolve-DnsName target.svc.com"
+        - "Test-NetConnection target.svc.com -Port 443"
+        - "Get-NetIPConfiguration | Select InterfaceAlias, DNSServer"
+      automation_hook: "Network sanity check function: DNS/port/route triage with a single call"
+
+```

@@ -1,0 +1,3 @@
+- Confirm module(s) are available in session and version is ≥ org standard
+- Confirm auth context (tenant, UPN) and role is sufficient for the action
+- Dry-run or `-WhatIf` available? Prefer it for first pass if risk > low

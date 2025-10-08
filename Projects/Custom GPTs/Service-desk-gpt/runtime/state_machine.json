@@ -1,0 +1,77 @@
+{
+  "version": "1.1",
+  "entry": "INTAKE",
+  "timebox_minutes_first_pass": 15,
+  "question_limit": 3,
+
+  "ui": {
+    "progressive_disclosure": true,
+    "max_blocks_first_reply": 2,
+    "reply_sections": ["lead", "ask", "next"]
+  },
+
+  "states": [
+    { "id": "INTAKE",       "next": ["TRIAGE", "FAST_DEPLOY"] },
+    { "id": "TRIAGE",       "next": ["TESTS", "ESCALATE"] },
+    { "id": "FAST_DEPLOY",  "next": ["TESTS", "ESCALATE"] },
+    { "id": "TESTS",        "next": ["FIX", "ESCALATE"] },
+    { "id": "FIX",          "next": ["VERIFY", "ESCALATE"] },
+    { "id": "VERIFY",       "next": ["NOTE", "CAPTURE", "ESCALATE"] },
+    { "id": "NOTE",         "next": ["CAPTURE", "ESCALATE"] },
+    { "id": "CAPTURE",      "next": ["USER_UPDATE", "DONE"] },
+    { "id": "USER_UPDATE",  "next": ["DONE"] },
+    { "id": "ESCALATE",     "next": ["DONE"] },
+    { "id": "DONE",         "next": [] }
+  ],
+
+  "on_enter": {
+    "INTAKE":      ["render:intake_micro"],
+    "TRIAGE":      ["limit_questions:3"],
+    "FAST_DEPLOY": ["skip:intake"],
+    "TESTS":       ["enforce:cheap_tests<=2"],
+    "NOTE":        ["render:ticket_note", "sanitize:plain_text"],
+    "USER_UPDATE": ["render:user_update", "sanitize:plain_text"],
+    "ESCALATE":    ["render:escalation_packet", "sanitize:plain_text"]
+  },
+
+  "on_exit": {
+    "NOTE":        ["render:plain_output"],
+    "USER_UPDATE": ["render:plain_output"],
+    "ESCALATE":    ["render:plain_output"]
+  },
+
+  "guards": {
+    "INTAKE→TRIAGE":       "questions_asked <= 3 && !pattern_match",
+    "INTAKE→FAST_DEPLOY":  "pattern_match && confidence >= 0.8",
+    "TESTS→ESCALATE":      "time_elapsed >= 15 || risk >= \"medium\" || permission_block",
+    "VERIFY→NOTE":         "success_criteria_met == true && require_ticket_note == true",
+    "VERIFY→CAPTURE":      "success_criteria_met == true"
+  },
+
+  "artifacts": {
+    "ticket_note": { "path": "artifacts/ticket_note.txt", "content_type": "text/plain" },
+    "user_update": { "path": "artifacts/user_update.txt", "content_type": "text/plain" },
+    "escalation":  { "path": "artifacts/escalate.txt",    "content_type": "text/plain" }
+  },
+
+  "format_rules": {
+    "plaintext_states": ["NOTE", "USER_UPDATE", "ESCALATE"],
+    "deny_markdown_chars": "*_#>`"
+  },
+
+  "suggestions": {
+    "powershell": {
+      "enabled": true,
+      "triggers_any": [
+        "repetitive_change",
+        "multi_user_scope",
+        "identity_or_license_op",
+        "exchange_or_graph_op",
+        "deterministic_ui_flow",
+        "repeat_incident_pattern"
+      ],
+      "output_blocks": ["ps_scope", "ps_fast_path", "ps_rollback", "ps_automation_hook"],
+      "max_lines_each": 3
+    }
+  }
+}

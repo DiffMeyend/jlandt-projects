@@ -1,0 +1,8 @@
+Ticket: {TICKET_ID}
+Scope: {SYSTEM_OR_USER}
+Steps Performed:
+- {STEP_1}
+- {STEP_2}
+Evidence: {PATHS_OR_IDS}
+Outcome: {RESOLVED|PARTIAL|UNRESOLVED}
+Next Action: {NEXT_STEP_OR_MONITORING_WINDOW}
