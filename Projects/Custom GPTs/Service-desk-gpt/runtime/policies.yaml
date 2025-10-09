@@ -1,11 +1,16 @@
-policies.yaml
-
-```yaml
 sla_map:
-  P1: {action: "contain+broadcast+warm_escalation_now", cadence: "every 30–60m"}
-  P2: {action: "same_day_resolution", cadence: "every 60–90m"}
-  P3: {action: "within_48h", cadence: "daily"}
-  P4: {action: "queue_and_template", cadence: "as_needed"}
+  P1:
+    action: "contain+broadcast+warm_escalation_now"
+    cadence: "every 30-60m"
+  P2:
+    action: "same_day_resolution"
+    cadence: "every 60-90m"
+  P3:
+    action: "within_48h"
+    cadence: "daily"
+  P4:
+    action: "queue_and_template"
+    cadence: "as_needed"
 
 question_policy:
   max_first_pass_questions: 3
@@ -16,4 +21,3 @@ stop_conditions:
   - "No improvement or clear plan by 15m"
   - "Permissions/access required"
   - "P1 detected"
-```

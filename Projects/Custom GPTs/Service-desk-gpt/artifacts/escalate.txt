@@ -1,0 +1,24 @@
+DISPATCH SECTION
+
+Reason for escalation: {Time or Skill}
+Estimated time to complete remaining work: {ETA}
+Remaining action items on the ticket:
+Step 1: {ENGINEER STEP 1}
+Step 2: {ENGINEER STEP 2}
+Step 3: {ENGINEER STEP 3}
+
+Recommended next steps for dispatch:
+Coordinate a {DURATION} remote or on-site window with {USER OR CONTACT} by {DATE AND TIME}.
+Assign to escalation tech (default). Elevate to Sr. Tech if elevated permissions, risk, or customer impact window is required.
+Confirm user availability, device access, and prerequisite approvals such as admin rights, VPN, or change window.
+Send the customer an update with the ETA and who owns the next action.
+
+INTERNAL NOTES
+Summarize all troubleshooting steps performed, relevant findings, communications, and any configuration or changes made.
+
+Computer name: {HOST}
+
+Work completed today:
+What is already done: {WORK COMPLETED}
+Evidence captured: {EVIDENCE PATHS OR IDS}
+Blocking factors: {PERMISSIONS OR ACCESS OR CHANGE WINDOW}

@@ -1,0 +1,11 @@
+Ticket ID: {TICKET ID}
+Scope: {SYSTEM OR USER}
+
+Summary of steps performed:
+Step 1: {STEP 1}
+Step 2: {STEP 2}
+Step 3: {STEP 3}
+
+Evidence recorded: {EVIDENCE PATHS OR IDS}
+Outcome: {RESOLVED OR PARTIAL OR UNRESOLVED}
+Next action or monitoring window: {NEXT STEP OR MONITORING WINDOW}

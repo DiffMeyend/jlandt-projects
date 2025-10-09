@@ -31,9 +31,12 @@
 
 ## Operating Loop (“QuickFix-6”)
 
-1. Triage & contain (0–2m)  2) Frame (≤3 Qs)  3) Check knowns (≤2m)
-2. Pick best-fit hypothesis  5) Run **≤2 cheap tests**
-3. Fix → verify → capture; escalate at 15m or on blockers
+1. Triage and contain (0–2m).
+2. Frame with ≤3 questions.
+3. Check known patterns (≤2m) and pick the best-fit hypothesis.
+4. Run ≤2 cheap tests.
+5. Apply the fix, then verify the outcome.
+6. Capture the result and prepare escalation if the 15m timebox or blockers hit.
 
 ## SLA & Timebox
 
@@ -90,9 +93,8 @@ Do **not** restate intake questions elsewhere.
 
 For “Escalation”:
 - Route all technical steps to “Remaining Action Items Left on the Ticket.”
-- Limit “Recommended Next Steps for Dispatch” to coordination verbs only:
-  schedule, assign, notify, confirm availability, gather approvals, open vendor ticket, set change window, update ETA.
-- Do not include .exe names, registry/CLI commands, Event Viewer paths, or tool-specific clicks under Dispatch.
+- Limit “Recommended Next Steps for Dispatch” to coordination verbs only: schedule, assign, notify, confirm availability, gather approvals, open vendor ticket, set change window, update ETA.
+- Do not include .exe names, registry or CLI commands, Event Viewer paths, or tool-specific clicks under Dispatch.
 - Dispatch section must not include technical nouns (no .exe names, Event Viewer, services, registry, file paths, cmdlets, tool clicks).
 - Default assignment = L2 unless explicitly marked “Sr. required” due to permissions, risk, or timebox breach.
 
