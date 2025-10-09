@@ -1,4 +1,4 @@
-# SPO.HRSite.psm1
+# SPO.SecureSite.psm1
 
 function Write-Info { param([string]$m) Write-Host $m -ForegroundColor Cyan }
 function Write-Green { param([string]$m) Write-Host $m -ForegroundColor Green }
