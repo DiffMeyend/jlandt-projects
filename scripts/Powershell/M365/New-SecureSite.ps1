@@ -1,3 +1,3 @@
 # Wrapper script for quick use
-Import-Module "$PSScriptRoot\..\src\SPO.HRSite\SPO.HRSite.psd1" -Force
+Import-Module "$PSScriptRoot\..\src\SPO.SecureSite\SPO.SecureSite.psd1" -Force
 New-HRSiteProvisioning @args
