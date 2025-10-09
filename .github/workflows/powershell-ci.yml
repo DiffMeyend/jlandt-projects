@@ -10,23 +10,31 @@ permissions:
 
 jobs:
   lint-and-test:
+    name: Lint and Test PowerShell Code
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
-      # No setup action needed — pwsh is preinstalled
+      # pwsh is already installed on ubuntu-latest
 
-      - name: Install PSScriptAnalyzer
+      - name: Ensure PSScriptAnalyzer is available
         shell: pwsh
         run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+          $module = Get-Module -ListAvailable PSScriptAnalyzer | Sort-Object Version -Descending | Select-Object -First 1
+          if (-not $module) {
+            Set-PSRepository PSGallery -InstallationPolicy Trusted
+            Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          } else {
+            Import-Module $module.Name -MinimumVersion $module.Version -ErrorAction Stop
+          }
+          Get-Module PSScriptAnalyzer | Format-Table Name,Version
 
-      - name: Lint scripts
+      - name: Lint scripts (repo root)
         shell: pwsh
         run: |
-          Invoke-ScriptAnalyzer -Path ./src,./scripts -Recurse -Severity Warning
+          Invoke-ScriptAnalyzer -Path . -Recurse -Severity Warning
 
       - name: Run Pester tests
         shell: pwsh
