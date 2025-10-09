@@ -3,37 +3,32 @@ name: PowerShell CI
 on:
   pull_request:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 permissions:
   contents: read
 
 jobs:
   lint-and-test:
-    name: Lint and Test PowerShell Code
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v5
 
-      - name: Set up PowerShell
-        uses: egor-tensin/setup-powershell@v1
-        with:
-          version: '7.4.1'
+      # No setup action needed — pwsh is preinstalled
 
       - name: Install PSScriptAnalyzer
-        run: |
-          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
         shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
 
       - name: Lint scripts
+        shell: pwsh
         run: |
           Invoke-ScriptAnalyzer -Path ./src,./scripts -Recurse -Severity Warning
-        shell: pwsh
 
       - name: Run Pester tests
+        shell: pwsh
         run: |
           Invoke-Pester -Path ./tests -EnableExit
-        shell: pwsh
