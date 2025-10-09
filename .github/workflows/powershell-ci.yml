@@ -1,31 +1,34 @@
 name: PowerShell CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+  push:
+    branches:
+      - main
 
 jobs:
   lint-and-test:
-    runs-on: windows-latest
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup PowerShell
-        uses: actions/setup-powershell@v2
+      - name: Set up PowerShell
+        uses: pwsh/setup-pwsh@v1
         with:
-          pwsh-version: '7.4.x'
+          pwsh-version: "7.4.1"
 
-      - name: Install dependencies
+      - name: Install PSScriptAnalyzer
         run: |
           Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
-          Install-Module Pester -Force -Scope CurrentUser
+        shell: pwsh
 
-      - name: Run Script Analyzer
-        run: Invoke-ScriptAnalyzer -Path ./src -Recurse -Settings ./PSScriptAnalyzerSettings.psd1 -Severity Error
+      - name: Lint scripts
+        run: |
+          Invoke-ScriptAnalyzer -Path ./src,./scripts -Recurse -Severity Warning
+        shell: pwsh
 
-      - name: Run Pester Tests
-        run: Invoke-Pester -Path ./tests -Output Detailed -EnableExit
+      - name: Run Pester tests
+        run: |
+          Invoke-Pester -Path ./tests -EnableExit
+        shell: pwsh
