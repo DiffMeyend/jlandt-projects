@@ -1,0 +1,4 @@
+Subject: {ISSUE SUMMARY}
+Update summary: {WHAT CHANGED SINCE LAST}
+Next check-in: {TIME}
+Blocking items: {PERMISSIONS OR DEPENDENCIES}
