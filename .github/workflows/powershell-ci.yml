@@ -6,17 +6,22 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   lint-and-test:
+    name: Lint and Test PowerShell Code
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up PowerShell
-        uses: actions/setup-pwsh@v2
+        uses: PowerShell/setup-pwsh@v2
         with:
-          pwsh-version: "7.4.1"
+          pwsh-version: '7.4.1'
 
       - name: Install PSScriptAnalyzer
         run: |
